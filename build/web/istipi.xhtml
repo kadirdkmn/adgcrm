@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>İş Tipi</title>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputStylesheet name="style.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <h:form>
+                <h:commandButton action="/index" value="Anasayfa" />
+                <h:commandButton action="/personel" value="Personel" />
+                <h:commandButton action="/firma" value="Firma" /> 
+                <h:commandButton action="/durum" value="Durum" />
+                <h:commandButton action="/istipi" value="İs Tipi"/>
+                <h:commandButton action="/oncelik" value="Oncelik"/>
+                <h:commandButton action="/plandurumu" value="Plan Durumu"/>
+                <h:commandButton action="/program" value="Program"/>
+                <h:commandButton action="/genelis" value="Genel İs"/>
+                <h:commandButton action="/dosya" value="Dosya"/>
+
+            </h:form>
+        <div class="inline" style="width: 65%;float:left;">
+            <div class="widget-header">
+                <i class="fas fa-database"></i>
+                <h3>İş Tipi</h3>
+            </div>
+            <h:form id="personel-search-id">
+                  <h3>ARAMA İŞ TİPİ ADI:</h3>  
+                  <h:inputText class="inline" value="#{isTipiBean.aranan}">
+                    </h:inputText>
+                  <h:commandButton class="btn btn-secondary inline" action="#{isTipiBean.search()}" value="ARA">
+                      <f:ajax execute="personel-search-id" render="personel-list-id">                      
+                      </f:ajax>  
+                  </h:commandButton>
+                  <h:commandButton class="btn btn-secondary inline" action="#{isTipiBean.fullList()}" value="SIFIRLA">
+                      <f:ajax execute="personel-search-id" render="personel-list-id">                      
+                      </f:ajax>  
+                  </h:commandButton>
+                  
+                </h:form>
+            <h:form id="personel-list-id">
+                <h:dataTable styleClass="table table-striped table-bordered" value="#{isTipiBean.istipiList}" var="istipi">
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">İd</f:facet>
+                        <h:commandLink action="#{isTipiBean.istipiSec(ist)}" value="#{istipi.id}"></h:commandLink> 
+                    </h:column>
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">İş Tipi Adı</f:facet>
+                            #{istipi.kod}
+                            
+                    </h:column>
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">İş Tipi Açıklama</f:facet>
+                            #{istipi.aciklama}
+                    </h:column>
+                     <h:column>
+                        <f:facet class="headerTablo" name="header">SİLME</f:facet>
+                        <h:commandButton class="btn btn-danger" action="#{isTipiBean.delete(istipi)}" value="DELETE">
+                        </h:commandButton>
+                    </h:column>                           
+                </h:dataTable>
+            </h:form>
+        </div>
+        
+        <div class="inline" style="width: 30%;background-color: #495057;min-height:400px;">
+            <div class="widget-header">
+                <i class="fas fa-plus-square"></i>
+                <h3>İş Tipi Form</h3>
+            </div> 
+            <h:form enctype="multipart/form-data"> 
+               
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-baslik">İş Tipi Adı</label>
+                    <h:inputText id="peAdId" class="form-control" value="#{isTipiBean.istipi.kod}">
+                        <f:validateLength minimum = "3" maximum="12"/> 
+                    </h:inputText>
+                    <h:message for = "peAdId" style = "color:red" />
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-baslik">İş Tipi Açıklama</label>
+                    <h:inputText id="peSoId" class="form-control" value="#{isTipiBean.istipi.aciklama}">
+                        <f:validateLength minimum = "3" maximum="12"/> 
+                    </h:inputText>
+                    <h:message for = "peSoId" style = "color:red" />
+                </div>
+               <div class="div-buton">
+                   <h:commandButton rendered="#{isTipiBean.istipi.kod !=null}" class="btn btn-secondary" action="#{isTipiBean.formTemizle()}" value="TEMİZLE">
+                    </h:commandButton>
+                   <h:commandButton rendered="#{isTipiBean.istipi.kod !=null}" style="margin-left:15px;"  class="btn btn-warning" action="#{isTipiBean.update()}" value="UPDATE">
+                    </h:commandButton>
+                    <h:commandButton rendered="#{isTipiBean.istipi.kod ==null}" style="margin-left:15px;" class="btn btn-success" value="Create" action="#{isTipiBean.create()}"></h:commandButton>
+                </div>
+            </h:form>
+           
+        </div>
+        
+        
+    </h:body>
+</html>

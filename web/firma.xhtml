@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Firma</title>
+        <h:outputStylesheet library="css" name="bootstrap.css"/>
+        <h:outputStylesheet name="style.css"/>
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous"/>
+    </h:head>
+    <h:body>
+        <h:form>
+                <h:commandButton action="/index" value="Anasayfa" />
+                <h:commandButton action="/personel" value="Personel" />
+                <h:commandButton action="/firma" value="Firma" /> 
+                <h:commandButton action="/durum" value="Durum" />
+                <h:commandButton action="/istipi" value="İs Tipi"/>
+                <h:commandButton action="/oncelik" value="Oncelik"/>
+                <h:commandButton action="/plandurum" value="Plan Durumu"/>
+                <h:commandButton action="/program" value="Program"/>
+                <h:commandButton action="/genelis" value="Genel İs"/>
+                <h:commandButton action="/dosya" value="Dosya"/>
+
+            </h:form>
+        <div class="inline" style="width: 65%;float:left;">
+            <div class="widget-header">
+                <i class="fas fa-database"></i>
+                <h3>Firma</h3>
+            </div>
+            <h:form id="personel-search-id">
+                  <h3>ARAMA FİRMA ADI:</h3>  
+                  <h:inputText class="inline" value="#{firmaBean.aranan}">
+                    </h:inputText>
+                  <h:commandButton class="btn btn-secondary inline" action="#{firmaBean.search()}" value="ARA">
+                      <f:ajax execute="personel-search-id" render="personel-list-id">                      
+                      </f:ajax>  
+                  </h:commandButton>
+                  <h:commandButton class="btn btn-secondary inline" action="#{firmaBean.fullList()}" value="SIFIRLA">
+                      <f:ajax execute="personel-search-id" render="personel-list-id">                      
+                      </f:ajax>  
+                  </h:commandButton>
+                  
+                </h:form>
+            <h:form id="personel-list-id">
+                <pre>Page #{firmaBean.page} of #{firmaBean.pageCount}</pre>
+                <div class="btn-group">
+                     <h:commandButton action ="#{firmaBean.previous()}" value="Previous" styleClass="btn-group">
+                         <f:ajax execute="personel-list-id" render="form" >
+                          </f:ajax>
+                     </h:commandButton>
+                    <h:commandButton action ="#{firmaBean.next()}" value="Next" styleClass="btn-group">
+                        <f:ajax execute="personel-list-id" render="form" >
+                          </f:ajax>
+                    </h:commandButton>
+                </div>
+                <h:dataTable styleClass="table table-striped table-bordered" value="#{firmaBean.firmaList}" var="firma">
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">Id</f:facet>
+                        <h:commandLink action="#{firmaBean.firmaSec(d)}" value="#{firma.id}"></h:commandLink> 
+                    </h:column>
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">Firma Adı</f:facet>
+                            #{firma.kod}
+                    </h:column>
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">Firma Açıklama</f:facet>
+                            #{firma.aciklama}
+                    </h:column>
+                    <h:column>
+                        <f:facet class="headerTablo" name="header">SİLME</f:facet>
+                        <h:commandButton class="btn btn-danger" action="#{firmaBean.delete(firma)}" value="DELETE">
+                        </h:commandButton>
+                    </h:column> 
+                                               
+                </h:dataTable>
+            </h:form>
+        </div>
+        
+        <div class="inline" style="width: 30%;background-color: #495057;min-height:400px;">
+            <div class="widget-header">
+                <i class="fas fa-plus-square"></i>
+                <h3>Firma Form</h3>
+            </div> 
+            <h:form enctype="multipart/form-data"> 
+               
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-baslik">Firma Adı</label>
+                    <h:inputText id="peAdId" class="form-control" value="#{firmaBean.firma.kod}">
+                        <f:validateLength minimum = "3" maximum="12"/> 
+                    </h:inputText>
+                    <h:message for = "peAdId" style = "color:red" />
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label class="form-baslik">Firma Açıklama</label>
+                    <h:inputText id="peSoId" class="form-control" value="#{firmaBean.firma.aciklama}">
+                        <f:validateLength minimum = "3" maximum="12"/> 
+                    </h:inputText>
+                    <h:message for = "peSoId" style = "color:red" />
+                </div>
+               <div class="div-buton">
+                   <h:commandButton rendered="#{firmaBean.firma.kod !=null}" class="btn btn-secondary" action="#{firmaBean.formTemizle()}" value="TEMİZLE">
+                    </h:commandButton>
+                   <h:commandButton rendered="#{firmaBean.firma.kod !=null}" style="margin-left:15px;"  class="btn btn-warning" action="#{firmaBean.update()}" value="UPDATE">
+                    </h:commandButton>
+                    <h:commandButton rendered="#{firmaBean.firma.kod==null}" style="margin-left:15px;" class="btn btn-success" value="Create" action="#{firmaBean.create()}"></h:commandButton>
+                </div>
+            </h:form>
+           
+        </div>
+        
+        
+    </h:body>
+</html>
